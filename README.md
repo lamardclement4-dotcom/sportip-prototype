@@ -1,52 +1,60 @@
 # Sport'ip — prototype
 
-Maquette cliquable de l'application Sport'ip : essayer un sport sans s'engager, en réservant une séance d'essai en deux clics.
+Maquette cliquable de l'application Sport'ip : essayer un sport sans s'engager, en réservant une séance d'essai en deux clics, partout dans les Hauts-de-France.
 
-Ce prototype sert aux entretiens utilisateurs. Aucune donnée n'est réelle, rien n'est enregistré, aucun paiement n'a lieu.
+Ce prototype sert aux entretiens utilisateurs. Aucune donnée n'est réelle (clubs, adresses, encadrants), rien n'est enregistré, aucun paiement n'a lieu.
 
 ## Ouvrir le prototype
 
-Double-cliquez sur `index.html`. C'est tout : pas d'installation, pas de serveur.
+Double-cliquez sur `index.html`. Pas d'installation, pas de serveur. Seule la carte a besoin d'internet (le fond de carte est chargé en ligne) ; sans connexion, l'écran Carte renvoie vers la liste.
 
 ## Ce qu'il contient
 
-Huit écrans reliés entre eux :
-
-1. **Onboarding** — six questions : envie, en solo ou à plusieurs, cadre, forme, contact, contraintes
-2. **Profil** — les 3 sports les plus compatibles, avec leurs raisons et une séance d'essai pour chacun
-3. **Accueil** — chercher par envie plutôt que par discipline ; après l'onboarding, il montre les séances des sports recommandés
-4. **Résultats** — les séances de la semaine, avec places restantes
-5. **Fiche séance** — horaire, lieu, encadrant, matériel prêté
-6. **Formules** — unité, pack Découverte, pack Duo
-7. **Confirmation** — la preuve que le club est prévenu
-8. **Mon compte** — séances restantes et sports déjà essayés
+1. **Onboarding** — 13 questions en trois parties : vos envies, votre pratique, votre quotidien
+2. **Profil** — les 3 sports les plus compatibles, leurs raisons, et la séance d'essai la plus pratique pour chacun
+3. **Accueil** — chercher par envie ; après l'onboarding, il montre les séances recommandées
+4. **Résultats** — les séances autour de la ville choisie, triées par distance, avec filtres
+5. **Carte** — toutes les séances de la région : zoom, déplacement, saut de ville en ville, filtres
+6. **Fiche séance** — horaire, lieu, distance, encadrant, niveau, matériel, places, itinéraire
+7. **Formules** — unité, pack Découverte, pack Duo
+8. **Confirmation** — la preuve que le club est prévenu
+9. **Mon compte** — séances restantes et sports déjà essayés
 
 La barre de boutons au-dessus du téléphone permet de sauter directement à un écran. Les flèches ← → du clavier font défiler les écrans dans l'ordre : pratique pendant une démonstration.
 
 ## Utiliser le prototype en entretien
 
 - Ne présentez pas le projet avant. Posez le téléphone et demandez : « qu'est-ce que vous feriez avec ça ? »
-- Laissez la personne faire l'onboarding seule. Sur l'écran Profil, demandez si les sports proposés lui parlent : un sport rejeté malgré un bon score est une piste à creuser.
-- Notez les questions où la personne hésite ou appuie sur « Passer » : ce sont celles à reformuler.
+- Laissez la personne faire l'onboarding seule. Il compte 13 questions : chronométrez, et notez où elle hésite, appuie sur « Passer » ou décroche.
+- Sur l'écran Profil, demandez si les sports proposés lui parlent : un sport rejeté malgré un bon score est une piste à creuser.
+- Sur la carte, donnez une consigne concrète (« trouvez une séance samedi près d'Amiens ») et observez sans aider.
 - Ne défendez pas le prototype quand la personne bute. Le blocage est l'information.
-- Cachez l'écran des prix jusqu'à la fin, pour demander d'abord l'estimation spontanée.
+- Cachez l'écran des prix jusqu'à la fin, pour demander d'abord l'estimation spontanée. L'onboarding ne pose volontairement aucune question de budget.
 - Notez les mots exacts employés, pas vos résumés.
 
 ## Modifier le contenu
 
-Tout est dans `index.html`.
+| Fichier | Ce qu'il contient |
+| --- | --- |
+| `questions.js` | Les villes proposées et les 13 questions de l'onboarding |
+| `sports.js` | Les 18 sports : description, matériel, et profil utilisé par le calcul |
+| `seances.js` | Les séances d'essai : club, adresse, jour, heure, encadrant, coordonnées GPS |
+| `index.html` | Les écrans et les couleurs (bloc `:root` tout en haut) |
+| `app.js` | Le calcul de compatibilité et le fonctionnement des écrans |
+| `carte.js` | La carte |
 
-- **Questions de l'onboarding** : chaque réponse est un bouton `class="option"`. Changez librement les textes, mais pas `data-valeur` : c'est lui qui sert au calcul.
-- **Sports et séances d'essai** : tableau `SPORTS`, tout en haut du `<script>`. Chaque sport a sa séance (jour, heure, lieu, encadrant, matériel…) et son profil (envies notées de 0 à 3, format, cadre, intensité, contact…). La fiche séance, le paiement, la confirmation et le compte se remplissent à partir de ce tableau.
-- **Calcul de compatibilité** : fonction `compatibilite()`. Poids : envies 35 %, solo ou à plusieurs 20 %, cadre 15 %, forme 15 %, contact 15 %. Les contraintes (articulations, eau, vide) pénalisent ou écartent un sport.
-- **Listes de séances** des écrans Accueil et Résultats : écrites en clair dans le HTML, cherchez `class="seance"`. L'attribut `data-sport` indique quelle fiche s'ouvre au clic.
-- **Couleurs** : regroupées tout en haut du fichier, dans le bloc `:root`.
+- **Changer une question** : dans `questions.js`, modifiez librement les textes, mais pas les valeurs (premier élément de chaque option) : le calcul s'en sert.
+- **Ajouter une séance** : dans `seances.js`, copiez une ligne et changez les champs. Pour les coordonnées, faites un clic droit sur l'endroit dans Google Maps : les deux nombres affichés vont dans `lat` et `lng`.
+- **Calcul de compatibilité** (fonction `compatibilite()` dans `app.js`) : envies 25 %, ce qui plaît 15 %, solo ou à plusieurs 15 %, forme 15 %, loisir ou compétition 10 %, cadre 10 %, contact 10 %. Les contraintes (articulations, eau, vide) pénalisent ou écartent un sport. Un sport sans séance dans le rayon choisi perd des points.
+- **Séance proposée pour chaque sport** : d'abord dans le rayon choisi, puis au bon moment de la semaine, puis la plus proche.
+
+Le fond de carte vient d'OpenStreetMap : gratuit et sans clé, à condition de laisser visible la mention en bas de carte et de rester sur un usage modéré (un prototype, pas une application en production).
 
 ## Mettre en ligne (GitHub Pages)
 
 Une fois le dépôt créé : onglet **Settings** → **Pages** → source **Deploy from a branch** → branche `main`, dossier `/ (root)` → **Save**.
 
-Le fichier principal doit s'appeler exactement `index.html`, sinon l'adresse affiche une erreur 404.
+Le fichier principal doit s'appeler exactement `index.html`, sinon l'adresse affiche une erreur 404. Les fichiers `.js` doivent rester à côté de lui.
 
 L'adresse publique apparaît après une minute environ, sous la forme `https://VOTRE-PSEUDO.github.io/sportip-prototype/`. Elle s'ouvre sur téléphone, ce qui est le bon format pour un test en conditions réelles.
 
