@@ -11,6 +11,7 @@
 :root{
   --resine:#0F5D4A;      /* sol de gymnase en résine */
   --resine-fonce:#0A3A2E;
+  --resine-pale:#E3EEE9;
   --craie:#F4F6F1;       /* tracé au sol */
   --craie-ombre:#E2E7DC;
   --piste:#C8412B;       /* rouge de piste d'athlé */
@@ -20,6 +21,7 @@
   --rayon:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{
   font-family:'Instrument Sans',system-ui,sans-serif;
@@ -133,6 +135,7 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
   font:700 16px 'Archivo',sans-serif;letter-spacing:-.01em;
 }
 .action.calme{background:transparent;color:var(--resine);border:1.5px solid var(--craie-ombre);margin-top:10px}
+.action:disabled{opacity:.35;cursor:default}
 .note{font-size:13px;color:var(--gris);margin-top:10px;text-align:center;line-height:1.5}
 
 /* ---------- confirmation ---------- */
@@ -164,6 +167,77 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
 .nav button[aria-current="true"]{color:var(--resine)}
 .nav .picto{width:20px;height:20px;display:block}
 .pied{color:#8AA49A;font-size:12.5px;text-align:center;max-width:420px;line-height:1.5}
+
+/* ---------- onboarding ---------- */
+.mobile.plein-ecran .nav{display:none}
+.vue.plein[data-active]{display:flex;flex-direction:column}
+.bas{margin-top:auto;padding-top:20px}
+.bas .action{margin-top:0}
+.lien{
+  display:block;width:100%;background:none;border:0;cursor:pointer;padding:12px;
+  font:600 14px 'Instrument Sans',sans-serif;color:var(--gris);
+}
+.lien:hover{color:var(--encre)}
+
+.marque{font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--resine);margin:6px 0 14px}
+.marque span{color:var(--piste)}
+.terrain{border-radius:var(--rayon);background:var(--resine);aspect-ratio:16/10;overflow:hidden}
+.terrain svg{display:block;width:100%;height:100%}
+
+.etape h2{font-size:24px}
+.etape-tete{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.etape-tete .retour{font-size:18px;padding:2px 4px 2px 0}
+.jauge{flex:1;height:6px;border-radius:999px;background:var(--craie-ombre);overflow:hidden}
+.jauge span{display:block;height:100%;background:var(--resine);border-radius:inherit}
+.etape-num{font-size:12.5px;font-weight:600;color:var(--gris);white-space:nowrap}
+
+.choix{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.option{
+  width:100%;text-align:left;cursor:pointer;background:#fff;color:var(--encre);
+  border:1.5px solid var(--craie-ombre);border-radius:var(--rayon);
+  padding:12px 14px;display:flex;align-items:center;gap:12px;
+  font-family:'Instrument Sans',sans-serif;
+}
+.option > span{flex:1}
+.option .libelle{display:block;font-weight:600;font-size:15px}
+.option .precision{display:block;font-size:13px;color:var(--gris);margin-top:2px}
+.option::after{
+  content:"";flex:0 0 20px;height:20px;border-radius:6px;
+  border:1.5px solid var(--craie-ombre);background:#fff center/12px no-repeat;
+}
+.choix[data-max="1"] .option::after{border-radius:50%}
+.option[aria-pressed="true"]{border-color:var(--resine);box-shadow:inset 0 0 0 1.5px var(--resine)}
+.option[aria-pressed="true"]::after{
+  border-color:var(--resine);background-color:var(--resine);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.5l4.5-5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* ---------- profil ---------- */
+.surtitre{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--piste);margin-top:6px}
+.traits{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.traits span{font-size:12.5px;font-weight:600;background:var(--craie-ombre);padding:5px 10px;border-radius:999px}
+.exemple{font-size:13px;line-height:1.45;background:#FDF0CF;border-radius:10px;padding:9px 12px;margin-top:12px}
+.recos{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.reco{
+  width:100%;text-align:left;cursor:pointer;background:#fff;color:var(--encre);
+  border:1.5px solid var(--craie-ombre);border-radius:var(--rayon);padding:14px 16px;
+  display:flex;flex-direction:column;align-items:stretch;gap:9px;
+  font-family:'Instrument Sans',sans-serif;
+}
+.reco:hover{border-color:var(--resine)}
+.reco.premier{border-color:var(--resine);box-shadow:inset 0 0 0 1.5px var(--resine)}
+.meilleur{align-self:flex-start;background:var(--sifflet);font-weight:600;font-size:11.5px;padding:3px 8px;border-radius:6px}
+.reco-tete{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.reco .quoi{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px}
+.reco .score{font-family:'Archivo',sans-serif;font-weight:800;font-size:18px;color:var(--resine);white-space:nowrap}
+.raisons{display:flex;flex-wrap:wrap;gap:6px}
+.raisons span{font-size:12.5px;font-weight:500;color:var(--resine);background:var(--resine-pale);padding:4px 9px;border-radius:999px}
+.reco-pied{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--gris);border-top:1px solid var(--craie-ombre);padding-top:9px}
+.reco-pied b{font-weight:600;color:var(--piste);white-space:nowrap}
+.reco-pied b.calme{color:var(--gris)}
+.pour-vous{display:flex;justify-content:space-between;align-items:center;margin-top:18px;font-size:13px;font-weight:600;color:var(--gris)}
+.pour-vous button{background:none;border:0;cursor:pointer;font:600 13px 'Instrument Sans',sans-serif;color:var(--resine);padding:4px 0}
+.pour-vous + .liste{margin-top:8px}
 </style>
 </head>
 <body>
@@ -175,7 +249,9 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
   </div>
 
   <nav class="telecommande" aria-label="Aller à un écran">
-    <button data-va="accueil" aria-current="true">Accueil</button>
+    <button data-va="bienvenue" aria-current="true">Onboarding</button>
+    <button data-va="profil">Profil</button>
+    <button data-va="accueil">Accueil</button>
     <button data-va="resultats">Résultats</button>
     <button data-va="seance">Séance</button>
     <button data-va="pack">Pack</button>
@@ -183,31 +259,193 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
     <button data-va="compte">Mon compte</button>
   </nav>
 
-  <div class="mobile">
+  <div class="mobile plein-ecran">
     <div class="barre-etat"><span>9:41</span><span>Croix (59)</span></div>
 
+    <!-- ONBOARDING : BIENVENUE -->
+    <section class="vue plein" id="bienvenue" data-plein-ecran data-active>
+      <p class="marque">Sport<span>'</span>ip</p>
+      <div class="terrain" aria-hidden="true">
+        <svg viewBox="0 0 320 200" fill="none" stroke="#F4F6F1" stroke-opacity=".38" stroke-width="2">
+          <rect x="18" y="18" width="284" height="164" rx="2"/>
+          <path d="M160 18v164"/>
+          <circle cx="160" cy="100" r="30"/>
+          <path d="M18 62h52v76H18M302 62h-52v76h52"/>
+          <path d="M92 158c26-58 72-86 118-90" stroke="#F0B429" stroke-opacity="1" stroke-dasharray="3 7" stroke-linecap="round"/>
+          <circle cx="222" cy="66" r="9" fill="#F0B429" stroke="none"/>
+        </svg>
+      </div>
+      <h2 style="margin-top:22px">Quel sport est fait pour vous&nbsp;?</h2>
+      <p class="sous">6 questions, 1 minute. On vous propose les sports à essayer cette semaine, près de chez vous.</p>
+      <div class="bas">
+        <button class="action" data-va="q1">Trouver mes sports</button>
+        <button class="lien" data-va="accueil">Passer, je sais ce que je veux</button>
+      </div>
+    </section>
+
+    <!-- ONBOARDING : QUESTION 1 -->
+    <section class="vue plein etape" id="q1" data-groupe="bienvenue" data-plein-ecran>
+      <div class="etape-tete">
+        <button class="retour" data-va="bienvenue" aria-label="Retour">←</button>
+        <div class="jauge" aria-hidden="true"><span style="width:16.7%"></span></div>
+        <span class="etape-num">1 / 6</span>
+      </div>
+      <h2 id="q1-titre">Qu'est-ce qui vous donne envie de bouger&nbsp;?</h2>
+      <p class="sous">Deux choix maximum.</p>
+      <div class="choix" role="group" aria-labelledby="q1-titre" data-question="envie" data-max="2">
+        <button class="option" aria-pressed="false" data-valeur="defouler"><span><span class="libelle">Me défouler</span><span class="precision">Évacuer le stress de la semaine</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="detendre"><span><span class="libelle">Me détendre</span><span class="precision">Souffler, penser à autre chose</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="muscler"><span><span class="libelle">Me renforcer</span><span class="precision">Gagner en force et en tonus</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="rencontrer"><span><span class="libelle">Rencontrer du monde</span><span class="precision">Sortir, voir d'autres têtes</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="decouvrir"><span><span class="libelle">Découvrir</span><span class="precision">Essayer un truc jamais fait</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="depasser"><span><span class="libelle">Me dépasser</span><span class="precision">Progresser, me lancer des défis</span></span></button>
+      </div>
+      <div class="bas">
+        <button class="action suivant" data-va="q2" disabled>Continuer</button>
+        <button class="lien" data-va="q2">Passer cette question</button>
+      </div>
+    </section>
+
+    <!-- ONBOARDING : QUESTION 2 -->
+    <section class="vue plein etape" id="q2" data-groupe="bienvenue" data-plein-ecran>
+      <div class="etape-tete">
+        <button class="retour" data-va="q1" aria-label="Retour">←</button>
+        <div class="jauge" aria-hidden="true"><span style="width:33.3%"></span></div>
+        <span class="etape-num">2 / 6</span>
+      </div>
+      <h2 id="q2-titre">En solo ou à plusieurs&nbsp;?</h2>
+      <p class="sous">Un seul choix.</p>
+      <div class="choix" role="group" aria-labelledby="q2-titre" data-question="format" data-max="1">
+        <button class="option" aria-pressed="false" data-valeur="seul"><span><span class="libelle">En solo</span><span class="precision">À mon rythme, sans attendre personne</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="duo"><span><span class="libelle">À deux</span><span class="precision">Face à quelqu'un, ou avec quelqu'un</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="groupe"><span><span class="libelle">En petit groupe</span><span class="precision">Quelques personnes et un encadrant</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="equipe"><span><span class="libelle">En équipe</span><span class="precision">On gagne ou on perd ensemble</span></span></button>
+      </div>
+      <div class="bas">
+        <button class="action suivant" data-va="q3" disabled>Continuer</button>
+        <button class="lien" data-va="q3">Passer cette question</button>
+      </div>
+    </section>
+
+    <!-- ONBOARDING : QUESTION 3 -->
+    <section class="vue plein etape" id="q3" data-groupe="bienvenue" data-plein-ecran>
+      <div class="etape-tete">
+        <button class="retour" data-va="q2" aria-label="Retour">←</button>
+        <div class="jauge" aria-hidden="true"><span style="width:50%"></span></div>
+        <span class="etape-num">3 / 6</span>
+      </div>
+      <h2 id="q3-titre">Où aimeriez-vous bouger&nbsp;?</h2>
+      <p class="sous">Un seul choix.</p>
+      <div class="choix" role="group" aria-labelledby="q3-titre" data-question="cadre" data-max="1">
+        <button class="option" aria-pressed="false" data-valeur="salle"><span><span class="libelle">En salle</span><span class="precision">À l'abri, toute l'année</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="dehors"><span><span class="libelle">Dehors</span><span class="precision">Au grand air, même s'il pleut un peu</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="eau"><span><span class="libelle">Dans l'eau</span><span class="precision">Piscine, rivière</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="egal" data-neutre><span><span class="libelle">Peu importe</span><span class="precision">Tant que ça me plaît</span></span></button>
+      </div>
+      <div class="bas">
+        <button class="action suivant" data-va="q4" disabled>Continuer</button>
+        <button class="lien" data-va="q4">Passer cette question</button>
+      </div>
+    </section>
+
+    <!-- ONBOARDING : QUESTION 4 -->
+    <section class="vue plein etape" id="q4" data-groupe="bienvenue" data-plein-ecran>
+      <div class="etape-tete">
+        <button class="retour" data-va="q3" aria-label="Retour">←</button>
+        <div class="jauge" aria-hidden="true"><span style="width:66.7%"></span></div>
+        <span class="etape-num">4 / 6</span>
+      </div>
+      <h2 id="q4-titre">Et votre forme en ce moment&nbsp;?</h2>
+      <p class="sous">Pas de jugement : c'est pour vous proposer le bon niveau.</p>
+      <div class="choix" role="group" aria-labelledby="q4-titre" data-question="forme" data-max="1">
+        <button class="option" aria-pressed="false" data-valeur="reprise" data-trait="Reprise en douceur"><span><span class="libelle">Je reprends de zéro</span><span class="precision">Pas de sport depuis longtemps</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="moyen" data-trait="Forme moyenne"><span><span class="libelle">Je bouge un peu</span><span class="precision">Marche, vélo, de temps en temps</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="forme" data-trait="En forme"><span><span class="libelle">Je suis en forme</span><span class="precision">Du sport chaque semaine</span></span></button>
+      </div>
+      <div class="bas">
+        <button class="action suivant" data-va="q5" disabled>Continuer</button>
+        <button class="lien" data-va="q5">Passer cette question</button>
+      </div>
+    </section>
+
+    <!-- ONBOARDING : QUESTION 5 -->
+    <section class="vue plein etape" id="q5" data-groupe="bienvenue" data-plein-ecran>
+      <div class="etape-tete">
+        <button class="retour" data-va="q4" aria-label="Retour">←</button>
+        <div class="jauge" aria-hidden="true"><span style="width:83.3%"></span></div>
+        <span class="etape-num">5 / 6</span>
+      </div>
+      <h2 id="q5-titre">Le contact avec les autres&nbsp;?</h2>
+      <p class="sous">Un seul choix.</p>
+      <div class="choix" role="group" aria-labelledby="q5-titre" data-question="contact" data-max="1">
+        <button class="option" aria-pressed="false" data-valeur="aucun" data-trait="Sans contact"><span><span class="libelle">Pas de contact</span><span class="precision">Chacun dans sa bulle</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="leger" data-trait="Contact léger"><span><span class="libelle">Un peu, ça va</span><span class="precision">Un ballon disputé, un partenaire de danse</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="opposition" data-trait="Goût de l'opposition"><span><span class="libelle">J'aime l'opposition</span><span class="precision">Combat, duel : ça me motive</span></span></button>
+      </div>
+      <div class="bas">
+        <button class="action suivant" data-va="q6" disabled>Continuer</button>
+        <button class="lien" data-va="q6">Passer cette question</button>
+      </div>
+    </section>
+
+    <!-- ONBOARDING : QUESTION 6 -->
+    <section class="vue plein etape" id="q6" data-groupe="bienvenue" data-plein-ecran>
+      <div class="etape-tete">
+        <button class="retour" data-va="q5" aria-label="Retour">←</button>
+        <div class="jauge" aria-hidden="true"><span style="width:100%"></span></div>
+        <span class="etape-num">6 / 6</span>
+      </div>
+      <h2 id="q6-titre">Quelque chose à prendre en compte&nbsp;?</h2>
+      <p class="sous">On écarte ce qui ne vous conviendrait pas.</p>
+      <div class="choix" role="group" aria-labelledby="q6-titre" data-question="contraintes" data-max="3">
+        <button class="option" aria-pressed="false" data-valeur="articulations" data-trait="Articulations à ménager"><span><span class="libelle">Genoux ou dos sensibles</span><span class="precision">On évite les chocs et les sauts</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="eau" data-trait="Hors de l'eau"><span><span class="libelle">Pas à l'aise dans l'eau</span><span class="precision">On écarte ce qui demande de nager</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="vertige" data-trait="Pas de hauteur"><span><span class="libelle">Le vide me fait peur</span><span class="precision">On oublie l'escalade</span></span></button>
+        <button class="option" aria-pressed="false" data-valeur="rien" data-seul data-neutre><span><span class="libelle">Rien de particulier</span><span class="precision">Tout est possible</span></span></button>
+      </div>
+      <div class="bas">
+        <button class="action suivant" data-va="profil" disabled>Voir mes sports</button>
+        <button class="lien" data-va="profil">Passer cette question</button>
+      </div>
+    </section>
+
+    <!-- ONBOARDING : PROFIL (rempli par le script) -->
+    <section class="vue plein" id="profil" data-plein-ecran>
+      <p class="surtitre">Votre profil</p>
+      <h2 style="margin-top:6px">3 sports faits pour vous</h2>
+      <p class="sous">Classés par compatibilité avec vos réponses. Chacun a une séance d'essai cette semaine.</p>
+      <div class="traits" id="profil-traits"></div>
+      <p class="exemple" id="profil-exemple" hidden>Profil d'exemple : répondez aux questions pour voir le vôtre.</p>
+      <div class="recos" id="profil-recos"></div>
+      <div class="bas">
+        <button class="action calme" data-va="accueil">Explorer toutes les séances</button>
+        <button class="lien" data-va="q1" data-reinit>Refaire le test</button>
+      </div>
+    </section>
+
     <!-- ÉCRAN 1 : ACCUEIL -->
-    <section class="vue" id="accueil" data-active>
+    <section class="vue" id="accueil">
       <h2>Essayez un sport<br>cette semaine.</h2>
       <p class="sous">Une séance réservée en deux clics. Le club est prévenu, vous n'avez personne à appeler.</p>
 
       <div class="envies" role="group" aria-label="Quelle est votre envie">
-        <button class="envie" aria-pressed="true">Me défouler</button>
-        <button class="envie" aria-pressed="false">Me détendre</button>
-        <button class="envie" aria-pressed="false">En groupe</button>
-        <button class="envie" aria-pressed="false">Dehors</button>
+        <button class="envie" aria-pressed="true" data-lien="envie:defouler">Me défouler</button>
+        <button class="envie" aria-pressed="false" data-lien="envie:detendre">Me détendre</button>
+        <button class="envie" aria-pressed="false" data-lien="format:groupe,equipe">En groupe</button>
+        <button class="envie" aria-pressed="false" data-lien="cadre:dehors">Dehors</button>
       </div>
 
+      <p class="pour-vous" id="pour-vous" hidden><span>Choisies pour vous</span><button data-va="profil">Voir mon profil</button></p>
       <div class="liste">
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="boxe">
           <span><span class="quoi">Boxe anglaise</span><span class="quand">Mardi 19h00 · Ring Croisien, Croix<br>À 1,8 km</span></span>
           <span class="places">2 places</span>
         </button>
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="escalade">
           <span><span class="quoi">Escalade en salle</span><span class="quand">Mercredi 12h30 · Vertical'Art, Villeneuve-d'Ascq<br>À 6 km</span></span>
           <span class="places calme">6 places</span>
         </button>
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="volley">
           <span><span class="quoi">Volley loisir</span><span class="quand">Jeudi 20h15 · Gymnase Jean Zay, Roubaix<br>À 3,1 km</span></span>
           <span class="places calme">4 places</span>
         </button>
@@ -230,46 +468,46 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
       </div>
 
       <div class="liste">
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="boxe">
           <span><span class="quoi">Boxe anglaise</span><span class="quand">Mardi 19h00 · Ring Croisien</span></span>
           <span class="places">2 places</span>
         </button>
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="yoga">
           <span><span class="quoi">Yoga vinyasa</span><span class="quand">Mardi 12h15 · Studio Lila, Lille</span></span>
           <span class="places calme">8 places</span>
         </button>
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="escalade">
           <span><span class="quoi">Escalade en salle</span><span class="quand">Mercredi 12h30 · Vertical'Art</span></span>
           <span class="places calme">6 places</span>
         </button>
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="badminton">
           <span><span class="quoi">Badminton</span><span class="quand">Mercredi 18h45 · Halle Delaune, Roubaix</span></span>
           <span class="places">1 place</span>
         </button>
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="volley">
           <span><span class="quoi">Volley loisir</span><span class="quand">Jeudi 20h15 · Gymnase Jean Zay</span></span>
           <span class="places calme">4 places</span>
         </button>
-        <button class="seance" data-va="seance">
+        <button class="seance" data-va="seance" data-sport="aviron">
           <span><span class="quoi">Aviron d'initiation</span><span class="quand">Samedi 10h00 · Base de Wambrechies</span></span>
           <span class="places calme">5 places</span>
         </button>
       </div>
     </section>
 
-    <!-- ÉCRAN 3 : FICHE SÉANCE -->
+    <!-- ÉCRAN 3 : FICHE SÉANCE (remplie depuis le catalogue SPORTS) -->
     <section class="vue" id="seance">
       <button class="retour" data-va="resultats">← Séances</button>
-      <div class="visuel"><span class="etiquette">Ouvert aux débutants</span></div>
-      <h2 style="margin-top:16px">Boxe anglaise</h2>
-      <p class="sous">Séance collective d'1h. Échauffement, technique au sac, pas de combat pour une première fois.</p>
+      <div class="visuel"><span class="etiquette" data-champ="etiquette">Ouvert aux débutants</span></div>
+      <h2 style="margin-top:16px" data-champ="nom">Boxe anglaise</h2>
+      <p class="sous" data-champ="description">Séance collective d'1h. Échauffement, technique au sac, pas de combat pour une première fois.</p>
 
       <dl class="faits">
-        <div class="fait"><dt>Quand</dt><dd>Mardi 16 sept., 19h00</dd></div>
-        <div class="fait"><dt>Où</dt><dd>Ring Croisien, Croix</dd></div>
-        <div class="fait"><dt>Qui encadre</dt><dd>Karim, éducateur</dd></div>
-        <div class="fait"><dt>À apporter</dt><dd>Baskets, une bouteille</dd></div>
-        <div class="fait"><dt>Prêté sur place</dt><dd>Gants, bandes</dd></div>
+        <div class="fait"><dt>Quand</dt><dd data-champ="quand">Mardi 15 sept., 19h00</dd></div>
+        <div class="fait"><dt>Où</dt><dd data-champ="ou">Ring Croisien, Croix</dd></div>
+        <div class="fait"><dt>Qui encadre</dt><dd data-champ="qui">Karim, éducateur</dd></div>
+        <div class="fait"><dt>À apporter</dt><dd data-champ="apporter">Baskets, une bouteille</dd></div>
+        <div class="fait"><dt>Prêté sur place</dt><dd data-champ="prete">Gants, bandes</dd></div>
       </dl>
 
       <button class="action" data-va="pack">Réserver cette séance</button>
@@ -280,7 +518,7 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
     <section class="vue" id="pack">
       <button class="retour" data-va="seance">← Séance</button>
       <h2>Choisissez votre formule</h2>
-      <p class="sous">Boxe anglaise, mardi 19h00. Votre place est gardée 10 minutes.</p>
+      <p class="sous"><span data-champ="creneau">Boxe anglaise, mardi 19h00</span>. Votre place est gardée 10 minutes.</p>
 
       <div class="packs" role="group" aria-label="Formules">
         <button class="pack" aria-pressed="false">
@@ -306,10 +544,10 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
       <div class="confirme">
         <div class="pastille" aria-hidden="true">✓</div>
         <h2>C'est réservé.</h2>
-        <p class="sous">Karim a reçu votre nom. Présentez-vous 10 minutes avant, il vous attend.</p>
+        <p class="sous"><span data-champ="encadrant">Karim</span> a reçu votre nom. Présentez-vous 10 minutes avant, on vous attend.</p>
         <div class="recap">
-          <h3>Boxe anglaise</h3>
-          <p class="sous" style="margin-top:6px">Mardi 16 septembre, 19h00<br>Ring Croisien, 14 rue Jean Jaurès, Croix</p>
+          <h3 data-champ="nom">Boxe anglaise</h3>
+          <p class="sous" style="margin-top:6px"><span data-champ="dateLongue">Mardi 15 septembre, 19h00</span><br><span data-champ="adresse">Ring Croisien, 14 rue Jean Jaurès, Croix</span></p>
         </div>
       </div>
       <button class="action calme" data-va="compte">Voir mes séances</button>
@@ -326,7 +564,7 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
       <h3 style="margin-top:26px">À venir</h3>
       <div class="liste" style="margin-top:10px">
         <button class="seance" data-va="confirme">
-          <span><span class="quoi">Boxe anglaise</span><span class="quand">Mardi 16 sept., 19h00 · Croix</span></span>
+          <span><span class="quoi" data-champ="nom">Boxe anglaise</span><span class="quand" data-champ="aVenir">Mardi 15 sept., 19h00 · Croix</span></span>
           <span class="places calme">Réservé</span>
         </button>
       </div>
@@ -336,12 +574,13 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
         <div class="passe"><span>Escalade</span><span>4 sept.</span></div>
         <div class="passe"><span>Badminton</span><span>28 août</span></div>
       </div>
+      <button class="action calme" data-va="profil">Revoir mon profil sportif</button>
       <button class="action calme" data-va="accueil">Trouver une autre séance</button>
     </section>
 
     <!-- BARRE DE NAVIGATION -->
     <nav class="nav" aria-label="Navigation principale">
-      <button data-va="accueil" aria-current="true">
+      <button data-va="accueil">
         <svg class="picto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         Explorer
       </button>
@@ -361,32 +600,309 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
 
 <script>
 (function(){
+  /* =============================================================
+     CATALOGUE DES SPORTS
+     Un sport = sa séance d'essai de la semaine + son profil, utilisé
+     par l'onboarding pour calculer la compatibilité.
+       envies    : 0 à 3 pour defouler, detendre, muscler, rencontrer, decouvrir, depasser
+       format    : seul, duo, groupe, equipe
+       cadres    : salle, dehors, eau
+       intensite : 1 douce · 2 moyenne · 3 intense
+       contact   : 0 aucun · 1 léger · 2 opposition, combat
+       impact    : 0 doux pour les articulations · 1 moyen · 2 fort
+       eau       : 0 hors de l'eau · 1 on a pied · 2 il faut nager
+       hauteur   : true si le vide peut gêner
+     ============================================================= */
+  const SPORTS = [
+    { id:'boxe', nom:'Boxe anglaise',
+      envies:{defouler:3, detendre:0, muscler:2, rencontrer:1, decouvrir:1, depasser:3},
+      format:['duo','groupe'], cadres:['salle'], intensite:3, contact:2, impact:1, eau:0, hauteur:false,
+      jour:'Mardi', date:15, heure:'19h00', lieu:'Ring Croisien', adresse:'14 rue Jean Jaurès', ville:'Croix', distance:'1,8 km', places:2,
+      encadrant:'Karim', role:'éducateur', apporter:'Baskets, une bouteille', prete:'Gants, bandes', etiquette:'Ouvert aux débutants',
+      description:"Séance collective d'1h. Échauffement, technique au sac, pas de combat pour une première fois." },
+    { id:'escalade', nom:'Escalade en salle',
+      envies:{defouler:2, detendre:1, muscler:3, rencontrer:1, decouvrir:3, depasser:3},
+      format:['seul','duo','groupe'], cadres:['salle'], intensite:2, contact:0, impact:1, eau:0, hauteur:true,
+      jour:'Mercredi', date:16, heure:'12h30', lieu:"Vertical'Art", adresse:'', ville:"Villeneuve-d'Ascq", distance:'6 km', places:6,
+      encadrant:'Julie', role:'monitrice', apporter:'Une tenue souple', prete:'Chaussons, baudrier', etiquette:'Initiation encadrée',
+      description:"1h30 sur des blocs et des voies faciles. On apprend d'abord à assurer son partenaire." },
+    { id:'volley', nom:'Volley loisir',
+      envies:{defouler:2, detendre:1, muscler:1, rencontrer:3, decouvrir:1, depasser:1},
+      format:['groupe','equipe'], cadres:['salle'], intensite:2, contact:0, impact:1, eau:0, hauteur:false,
+      jour:'Jeudi', date:17, heure:'20h15', lieu:'Gymnase Jean Zay', adresse:'', ville:'Roubaix', distance:'3,1 km', places:4,
+      encadrant:'Sofiane', role:'capitaine du club', apporter:'Baskets de salle, une bouteille', prete:'Ballons, genouillères', etiquette:'Tous niveaux',
+      description:"Match loisir mixte après 20 minutes d'échauffement. Les équipes sont refaites à chaque set." },
+    { id:'yoga', nom:'Yoga vinyasa',
+      envies:{defouler:0, detendre:3, muscler:2, rencontrer:0, decouvrir:1, depasser:1},
+      format:['seul','groupe'], cadres:['salle'], intensite:1, contact:0, impact:0, eau:0, hauteur:false,
+      jour:'Mardi', date:15, heure:'12h15', lieu:'Studio Lila', adresse:'', ville:'Lille', distance:'7 km', places:8,
+      encadrant:'Inès', role:'professeure', apporter:'Une tenue souple', prete:'Tapis, briques', etiquette:'Pause déjeuner',
+      description:"45 minutes d'enchaînements fluides, calés sur la respiration. De quoi couper la journée en deux." },
+    { id:'badminton', nom:'Badminton',
+      envies:{defouler:2, detendre:1, muscler:1, rencontrer:2, decouvrir:1, depasser:2},
+      format:['duo','groupe'], cadres:['salle'], intensite:2, contact:0, impact:1, eau:0, hauteur:false,
+      jour:'Mercredi', date:16, heure:'18h45', lieu:'Halle Delaune', adresse:'', ville:'Roubaix', distance:'3,4 km', places:1,
+      encadrant:'Thomas', role:'entraîneur', apporter:'Baskets de salle', prete:'Raquettes, volants', etiquette:'Dernière place',
+      description:"Créneau loisir d'1h30 en double. L'entraîneur passe sur chaque terrain pour donner les bases." },
+    { id:'aviron', nom:"Aviron d'initiation",
+      envies:{defouler:1, detendre:2, muscler:3, rencontrer:2, decouvrir:3, depasser:1},
+      format:['groupe','equipe'], cadres:['dehors','eau'], intensite:2, contact:0, impact:0, eau:2, hauteur:false,
+      jour:'Samedi', date:19, heure:'10h00', lieu:'Base de Wambrechies', adresse:'', ville:'Wambrechies', distance:'9 km', places:5,
+      encadrant:'Marc', role:'moniteur', apporter:'Tenue de sport, savoir nager', prete:'Bateau, gilet', etiquette:'Sur la Deûle',
+      description:"2h en bateau à quatre sur la Deûle. Pour une première sortie, le moniteur rame avec vous." },
+    { id:'natation', nom:'Natation adultes',
+      envies:{defouler:1, detendre:2, muscler:2, rencontrer:0, decouvrir:1, depasser:2},
+      format:['seul','groupe'], cadres:['eau'], intensite:2, contact:0, impact:0, eau:2, hauteur:false,
+      jour:'Jeudi', date:17, heure:'19h30', lieu:'Piscine de Croix', adresse:'', ville:'Croix', distance:'1,2 km', places:7,
+      encadrant:'Nadia', role:'maître-nageuse', apporter:'Maillot, bonnet, serviette', prete:'Planches, pull-buoys', etiquette:'Groupes de niveau',
+      description:"45 minutes par groupes de niveau. On travaille le souffle et une nage à la fois, sans chrono." },
+    { id:'aquagym', nom:'Aquagym',
+      envies:{defouler:1, detendre:3, muscler:2, rencontrer:2, decouvrir:1, depasser:0},
+      format:['groupe'], cadres:['eau'], intensite:1, contact:0, impact:0, eau:1, hauteur:false,
+      jour:'Vendredi', date:18, heure:'12h15', lieu:'Piscine de Croix', adresse:'', ville:'Croix', distance:'1,2 km', places:10,
+      encadrant:'Nadia', role:'maître-nageuse', apporter:'Maillot, bonnet', prete:'Frites, haltères en mousse', etiquette:'On a pied partout',
+      description:"45 minutes en musique dans le petit bassin. On a pied tout le temps, les articulations sont ménagées." },
+    { id:'course', nom:'Course à pied en groupe',
+      envies:{defouler:3, detendre:2, muscler:1, rencontrer:2, decouvrir:0, depasser:3},
+      format:['seul','groupe'], cadres:['dehors'], intensite:2, contact:0, impact:2, eau:0, hauteur:false,
+      jour:'Dimanche', date:20, heure:'9h30', lieu:'Parc Barbieux', adresse:'', ville:'Roubaix', distance:'2,5 km', places:12,
+      encadrant:'Élodie', role:'coach', apporter:'Chaussures de course, une bouteille', prete:'Gilet fluo', etiquette:'Personne à la traîne',
+      description:"Une boucle de 5 km en alternant marche et course. Le groupe attend toujours le dernier." },
+    { id:'marche', nom:'Marche nordique',
+      envies:{defouler:1, detendre:3, muscler:1, rencontrer:3, decouvrir:2, depasser:0},
+      format:['groupe'], cadres:['dehors'], intensite:1, contact:0, impact:0, eau:0, hauteur:false,
+      jour:'Samedi', date:19, heure:'9h00', lieu:'Parc du Héron', adresse:'', ville:"Villeneuve-d'Ascq", distance:'7 km', places:9,
+      encadrant:'Bernard', role:'animateur', apporter:'Chaussures de marche', prete:'Bâtons', etiquette:'Idéal pour reprendre',
+      description:"1h30 autour du lac. La technique des bâtons s'apprend en 10 minutes, ensuite on marche en discutant." },
+    { id:'pilates', nom:'Pilates',
+      envies:{defouler:0, detendre:2, muscler:3, rencontrer:0, decouvrir:1, depasser:1},
+      format:['seul','groupe'], cadres:['salle'], intensite:1, contact:0, impact:0, eau:0, hauteur:false,
+      jour:'Lundi', date:14, heure:'18h30', lieu:'Studio Lila', adresse:'', ville:'Lille', distance:'7 km', places:5,
+      encadrant:'Inès', role:'professeure', apporter:'Tenue souple, chaussettes', prete:'Tapis, élastiques', etiquette:'En douceur',
+      description:"50 minutes de renforcement profond : gainage, posture, respiration. Aucun saut, aucun à-coup." },
+    { id:'judo', nom:'Judo adultes',
+      envies:{defouler:2, detendre:0, muscler:2, rencontrer:1, decouvrir:2, depasser:3},
+      format:['duo','groupe'], cadres:['salle'], intensite:3, contact:2, impact:2, eau:0, hauteur:false,
+      jour:'Mercredi', date:16, heure:'20h00', lieu:'Dojo Croisien', adresse:'', ville:'Croix', distance:'1,5 km', places:3,
+      encadrant:'Yannick', role:'ceinture noire', apporter:'Un t-shirt, une bouteille', prete:'Kimono', etiquette:"Chutes apprises d'abord",
+      description:"1h30 sur le tatami : on apprend d'abord à tomber sans se faire mal, puis les premières prises au sol." },
+    { id:'rugby', nom:'Rugby à 5',
+      envies:{defouler:3, detendre:0, muscler:1, rencontrer:3, decouvrir:2, depasser:2},
+      format:['equipe'], cadres:['dehors'], intensite:2, contact:1, impact:1, eau:0, hauteur:false,
+      jour:'Jeudi', date:17, heure:'19h00', lieu:'Stade du Parc', adresse:'', ville:'Marcq-en-Barœul', distance:'4 km', places:6,
+      encadrant:'Léo', role:'éducateur', apporter:'Crampons ou baskets, une bouteille', prete:'Chasubles, ballons', etiquette:'Sans plaquage',
+      description:"Rugby mixte sans plaquage : on touche à deux mains au lieu de plaquer. Beaucoup de course, aucun choc." },
+    { id:'arc', nom:"Tir à l'arc",
+      envies:{defouler:0, detendre:3, muscler:1, rencontrer:1, decouvrir:3, depasser:2},
+      format:['seul','groupe'], cadres:['salle','dehors'], intensite:1, contact:0, impact:0, eau:0, hauteur:false,
+      jour:'Samedi', date:19, heure:'14h00', lieu:'Les Archers de Croix', adresse:'', ville:'Croix', distance:'2 km', places:4,
+      encadrant:'Chantal', role:'entraîneure', apporter:'Des chaussures fermées', prete:'Arc, flèches, protège-bras', etiquette:'Tout en concentration',
+      description:"1h30 d'initiation, à 10 puis 18 mètres. On repart avec son premier score." },
+    { id:'salsa', nom:'Salsa débutants',
+      envies:{defouler:2, detendre:2, muscler:0, rencontrer:3, decouvrir:3, depasser:1},
+      format:['duo','groupe'], cadres:['salle'], intensite:2, contact:1, impact:1, eau:0, hauteur:false,
+      jour:'Vendredi', date:18, heure:'20h30', lieu:'Maison des associations', adresse:'', ville:'Roubaix', distance:'3 km', places:8,
+      encadrant:'Carlos', role:'professeur', apporter:'Des chaussures qui glissent un peu', prete:'Rien, juste la musique', etiquette:'Pas besoin de partenaire',
+      description:"1h de pas de base et de premières passes. On change de partenaire toutes les cinq minutes." },
+    { id:'crosstraining', nom:'Cross-training',
+      envies:{defouler:3, detendre:0, muscler:3, rencontrer:1, decouvrir:1, depasser:3},
+      format:['groupe'], cadres:['salle'], intensite:3, contact:0, impact:2, eau:0, hauteur:false,
+      jour:'Mardi', date:15, heure:'18h30', lieu:'La Forge', adresse:'', ville:'Croix', distance:'1 km', places:3,
+      encadrant:'Mehdi', role:'coach', apporter:'Baskets, serviette, bouteille', prete:'Kettlebells, cordes', etiquette:'Version débutant',
+      description:"45 minutes d'effort en groupe. Chaque mouvement a sa version débutant, le coach l'adapte pour vous." }
+  ];
+
+  const QUESTIONS = ['envie', 'format', 'cadre', 'forme', 'contact', 'contraintes'];
+  // profil montré si l'on saute à l'écran Profil sans avoir répondu (démonstration)
+  const EXEMPLE = { envie:['defouler','depasser'], format:['groupe'], cadre:['salle'], forme:['moyen'], contact:['opposition'], contraintes:['rien'] };
+  const reponses = Object.fromEntries(QUESTIONS.map(q => [q, []]));
+
+  /* ---------- calcul de compatibilité, de 0 à 1 ---------- */
+  const FORME   = { reprise:[1, .6, .25], moyen:[.8, 1, .6], forme:[.55, .85, 1] };      // selon l'intensité 1, 2, 3
+  const CONTACT = { aucun:[1, .45, 0],    leger:[.85, 1, .5], opposition:[.6, .85, 1] }; // selon le contact 0, 1, 2
+
+  function compatibilite(s, r){
+    let total = 0, poids = 0;
+    const critere = (p, v) => { total += p * v; poids += p; };
+    if (r.envie.length)   critere(35, r.envie.reduce((a, e) => a + s.envies[e], 0) / (3 * r.envie.length));
+    if (r.format.length)  critere(20, r.format.some(f => s.format.includes(f)) ? 1 : .3);
+    if (r.cadre.length && !r.cadre.includes('egal')) critere(15, r.cadre.some(c => s.cadres.includes(c)) ? 1 : .2);
+    if (r.forme.length)   critere(15, FORME[r.forme[0]][s.intensite - 1]);
+    if (r.contact.length) critere(15, CONTACT[r.contact[0]][s.contact]);
+    let note = poids ? total / poids : .5;
+    // les contraintes pénalisent ou écartent, quel que soit le reste
+    if (r.contraintes.includes('articulations')) note *= [1, .75, .4][s.impact];
+    if (r.contraintes.includes('eau'))           note *= [1, .5, 0][s.eau];
+    if (r.contraintes.includes('vertige') && s.hauteur) note = 0;
+    if (r.contact.includes('aucun') && s.contact === 2) note *= .4;
+    return note;
+  }
+
+  const km = s => parseFloat(s.distance.replace(',', '.'));
+  function classement(r){
+    return SPORTS.map(s => ({ s, note: compatibilite(s, r) }))
+      .filter(x => x.note > .05)
+      .sort((a, b) => b.note - a.note || km(a.s) - km(b.s));
+  }
+
+  const MOTS = {
+    envie:  { defouler:'Pour vous défouler', detendre:'Pour souffler', muscler:'Pour vous renforcer',
+              rencontrer:'Pour rencontrer du monde', decouvrir:'Pour découvrir', depasser:'Pour vous dépasser' },
+    format: { seul:'En solo', duo:'À deux', groupe:'En petit groupe', equipe:'En équipe' },
+    cadre:  { salle:'En salle', dehors:'En plein air', eau:"Dans l'eau" }
+  };
+  function raisons(s, r){
+    const t = [];
+    const envie = [...r.envie].sort((a, b) => s.envies[b] - s.envies[a])[0];
+    if (envie && s.envies[envie] >= 2) t.push(MOTS.envie[envie]);
+    if (r.contraintes.includes('articulations') && s.impact === 0) t.push('Doux pour les articulations');
+    const format = r.format.find(f => s.format.includes(f));
+    if (format) t.push(MOTS.format[format]);
+    const cadre = r.cadre.find(c => s.cadres.includes(c));
+    if (cadre) t.push(MOTS.cadre[cadre]);
+    if (r.contact.includes('aucun') && s.contact === 0) t.push('Sans contact');
+    if (r.contact.includes('opposition') && s.contact === 2) t.push('Avec opposition');
+    if (r.forme.includes('reprise') && s.intensite === 1) t.push('Idéal pour reprendre');
+    if (r.forme.includes('forme') && s.intensite === 3) t.push('Ça va transpirer');
+    return t.length ? t.slice(0, 3) : ['Proche de vos envies'];
+  }
+
+  /* ---------- rendu ---------- */
+  const places = n => n + (n > 1 ? ' places' : ' place');
+  const lieu = s => s.lieu.includes(s.ville) ? s.lieu : `${s.lieu}, ${s.ville}`;
+
+  function carteReco({ s, note }, r, i){
+    return `<button class="reco${i ? '' : ' premier'}" data-va="seance" data-sport="${s.id}">
+      ${i ? '' : '<span class="meilleur">Meilleur choix</span>'}
+      <span class="reco-tete"><span class="quoi">${s.nom}</span><span class="score">${Math.round(note * 100)}&nbsp;%</span></span>
+      <span class="raisons">${raisons(s, r).map(t => `<span>${t}</span>`).join('')}</span>
+      <span class="reco-pied"><span>${s.jour} ${s.heure} · ${s.lieu}</span><b${s.places > 2 ? ' class="calme"' : ''}>${places(s.places)}</b></span>
+    </button>`;
+  }
+
+  function carteSeance(s){
+    return `<button class="seance" data-va="seance" data-sport="${s.id}">
+      <span><span class="quoi">${s.nom}</span><span class="quand">${s.jour} ${s.heure} · ${lieu(s)}<br>À ${s.distance}</span></span>
+      <span class="places${s.places > 2 ? ' calme' : ''}">${places(s.places)}</span>
+    </button>`;
+  }
+
+  // les réponses en étiquettes : data-trait s'il existe, sinon le libellé (« Peu importe » et « Rien de particulier » exclus)
+  function traits(r){
+    return QUESTIONS.flatMap(q => r[q]
+      .map(v => document.querySelector(`.choix[data-question="${q}"] [data-valeur="${v}"]`))
+      .filter(o => o && !o.hasAttribute('data-neutre'))
+      .map(o => `<span>${o.dataset.trait || o.querySelector('.libelle').textContent}</span>`)
+    ).join('');
+  }
+
+  const repondu = () => QUESTIONS.some(q => reponses[q].length);
+
+  function rendreProfil(){
+    const reel = repondu();
+    const r = reel ? reponses : EXEMPLE;
+    const top = classement(r).slice(0, 3);
+    document.getElementById('profil-exemple').hidden = reel;
+    document.getElementById('profil-traits').innerHTML = traits(r);
+    document.getElementById('profil-recos').innerHTML = top.map((x, i) => carteReco(x, r, i)).join('');
+    if (reel) personnaliserAccueil(top);
+  }
+
+  // après l'onboarding, l'accueil montre les séances des sports recommandés
+  function personnaliserAccueil(top){
+    document.querySelector('#accueil .liste').innerHTML = top.map(x => carteSeance(x.s)).join('');
+    document.getElementById('pour-vous').hidden = false;
+    document.querySelectorAll('#accueil [data-lien]').forEach(b => {
+      const [q, valeurs] = b.dataset.lien.split(':');
+      b.setAttribute('aria-pressed', String(valeurs.split(',').some(v => reponses[q].includes(v))));
+    });
+  }
+
+  // fiche séance, paiement, confirmation et compte suivent le sport choisi
+  function choisirSport(id){
+    const s = SPORTS.find(x => x.id === id);
+    if (!s) return;
+    const champs = {
+      nom: s.nom, description: s.description, etiquette: s.etiquette,
+      quand: `${s.jour} ${s.date} sept., ${s.heure}`,
+      ou: lieu(s),
+      qui: `${s.encadrant}, ${s.role}`,
+      apporter: s.apporter, prete: s.prete,
+      creneau: `${s.nom}, ${s.jour.toLowerCase()} ${s.heure}`,
+      encadrant: s.encadrant,
+      dateLongue: `${s.jour} ${s.date} septembre, ${s.heure}`,
+      adresse: [s.lieu, s.adresse, s.lieu.includes(s.ville) ? '' : s.ville].filter(Boolean).join(', '),
+      aVenir: `${s.jour} ${s.date} sept., ${s.heure} · ${s.ville}`
+    };
+    document.querySelectorAll('[data-champ]').forEach(el => { el.textContent = champs[el.dataset.champ]; });
+  }
+
+  function reinitialiser(){
+    QUESTIONS.forEach(q => { reponses[q] = []; });
+    document.querySelectorAll('.option').forEach(o => o.setAttribute('aria-pressed', 'false'));
+    document.querySelectorAll('.suivant').forEach(b => { b.disabled = true; });
+  }
+
+  /* ---------- navigation ---------- */
   const vues = [...document.querySelectorAll('.vue')];
   const ordre = vues.map(v => v.id);
+  const mobile = document.querySelector('.mobile');
 
   function afficher(id){
-    vues.forEach(v => v.id === id ? v.setAttribute('data-active','') : v.removeAttribute('data-active'));
+    const vue = document.getElementById(id);
+    if (!vues.includes(vue)) return;
+    if (id === 'profil') rendreProfil();
+    vues.forEach(v => v === vue ? v.setAttribute('data-active', '') : v.removeAttribute('data-active'));
+    const groupe = vue.dataset.groupe || id;
     document.querySelectorAll('.telecommande button, .nav button').forEach(b =>
-      b.setAttribute('aria-current', String(b.dataset.va === id))
+      b.setAttribute('aria-current', String(b.dataset.va === id || b.dataset.va === groupe))
     );
-    const active = document.getElementById(id);
-    if (active) active.scrollTop = 0;
+    mobile.classList.toggle('plein-ecran', vue.hasAttribute('data-plein-ecran'));
+    vue.scrollTop = 0;
   }
 
   // tout élément porteur de data-va navigue
   document.addEventListener('click', e => {
     const cible = e.target.closest('[data-va]');
-    if (cible) afficher(cible.dataset.va);
+    if (!cible) return;
+    if (cible.hasAttribute('data-reinit')) reinitialiser();
+    if (cible.dataset.sport) choisirSport(cible.dataset.sport);
+    afficher(cible.dataset.va);
   });
 
-  // boutons à état (envies, filtres, packs)
+  // réponses de l'onboarding : un choix, ou plusieurs jusqu'à data-max
+  document.querySelectorAll('.choix').forEach(groupe => {
+    const q = groupe.dataset.question, max = Number(groupe.dataset.max);
+    const options = [...groupe.querySelectorAll('.option')];
+    const suivant = groupe.closest('.vue').querySelector('.suivant');
+    options.forEach(o => o.addEventListener('click', () => {
+      const v = o.dataset.valeur;
+      let choix = reponses[q];
+      if (choix.includes(v)) choix = choix.filter(x => x !== v);
+      else if (o.hasAttribute('data-seul')) choix = [v];
+      else {
+        choix = choix.filter(x => !groupe.querySelector(`[data-valeur="${x}"]`).hasAttribute('data-seul'));
+        choix.push(v);
+        if (choix.length > max) choix.shift();   // au-delà du maximum, le plus ancien choix saute
+      }
+      reponses[q] = choix;
+      options.forEach(x => x.setAttribute('aria-pressed', String(choix.includes(x.dataset.valeur))));
+      suivant.disabled = !choix.length;
+    }));
+  });
+
+  // boutons à état (envies, filtres)
   document.querySelectorAll('.envie').forEach(b => {
     b.addEventListener('click', () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'));
   });
+
+  // formules : une seule à la fois, et le bouton de paiement suit le prix
   document.querySelectorAll('.packs').forEach(groupe => {
+    const payer = groupe.closest('.vue').querySelector('.action');
     groupe.querySelectorAll('.pack').forEach(p => p.addEventListener('click', () => {
-      groupe.querySelectorAll('.pack').forEach(a => a.setAttribute('aria-pressed','false'));
-      p.setAttribute('aria-pressed','true');
+      groupe.querySelectorAll('.pack').forEach(a => a.setAttribute('aria-pressed', 'false'));
+      p.setAttribute('aria-pressed', 'true');
+      payer.textContent = `Payer ${p.querySelector('.prix').textContent} et réserver`;
     }));
   });
 
@@ -397,6 +913,8 @@ h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacin
     if (e.key === 'ArrowRight') afficher(ordre[Math.min(i + 1, ordre.length - 1)]);
     if (e.key === 'ArrowLeft')  afficher(ordre[Math.max(i - 1, 0)]);
   });
+
+  afficher(document.querySelector('.vue[data-active]').id);
 })();
 </script>
 </body>
