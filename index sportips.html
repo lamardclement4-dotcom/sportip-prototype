@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sport'ip — prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --resine:#0F5D4A;      /* sol de gymnase en résine */
+  --resine-fonce:#0A3A2E;
+  --craie:#F4F6F1;       /* tracé au sol */
+  --craie-ombre:#E2E7DC;
+  --piste:#C8412B;       /* rouge de piste d'athlé */
+  --sifflet:#F0B429;
+  --encre:#14211D;
+  --gris:#6B7A73;
+  --rayon:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Instrument Sans',system-ui,sans-serif;
+  background:var(--resine-fonce);
+  color:var(--encre);
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:28px 16px 48px;
+  gap:20px;
+}
+
+/* ---------- habillage de présentation (hors app) ---------- */
+.plateau{max-width:980px;width:100%;display:flex;flex-direction:column;align-items:center;gap:18px}
+.enseigne{color:var(--craie);text-align:center}
+.enseigne h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;letter-spacing:-.02em}
+.enseigne p{font-size:14px;color:#9FB6AC;margin-top:4px}
+
+.telecommande{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+  background:rgba(255,255,255,.06);padding:8px;border-radius:999px;
+}
+.telecommande button{
+  font:500 13px 'Instrument Sans',sans-serif;
+  color:#B9CCC4;background:transparent;border:0;cursor:pointer;
+  padding:7px 13px;border-radius:999px;
+}
+.telecommande button:hover{color:#fff}
+.telecommande button[aria-current="true"]{background:var(--craie);color:var(--encre)}
+.telecommande button:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--sifflet);outline-offset:2px}
+
+/* ---------- le téléphone ---------- */
+.mobile{
+  width:100%;max-width:392px;height:min(780px,86vh);
+  background:var(--craie);border-radius:32px;overflow:hidden;
+  position:relative;display:flex;flex-direction:column;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+}
+.barre-etat{
+  flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
+  padding:12px 22px 4px;font-size:12px;font-weight:600;color:var(--encre);
+}
+.vue{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:8px 20px 24px;display:none}
+.vue[data-active]{display:block}
+@media (prefers-reduced-motion:no-preference){
+  .vue[data-active]{animation:entre .22s ease-out}
+  @keyframes entre{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+}
+
+/* ---------- typographie app ---------- */
+h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:27px;line-height:1.12;letter-spacing:-.025em}
+h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.sous{color:var(--gris);font-size:14.5px;line-height:1.5;margin-top:7px}
+.retour{
+  background:none;border:0;font:600 14px 'Instrument Sans',sans-serif;color:var(--gris);
+  cursor:pointer;padding:6px 0;display:inline-flex;gap:6px;align-items:center;
+}
+
+/* ---------- envies ---------- */
+.envies{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.envie{
+  font:600 14px 'Instrument Sans',sans-serif;cursor:pointer;
+  border:1.5px solid var(--craie-ombre);background:#fff;color:var(--encre);
+  padding:9px 14px;border-radius:999px;
+}
+.envie[aria-pressed="true"]{background:var(--resine);border-color:var(--resine);color:#fff}
+
+/* ---------- séances ---------- */
+.liste{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.seance{
+  width:100%;text-align:left;cursor:pointer;background:#fff;border:0;
+  border-left:4px solid var(--resine);border-radius:0 var(--rayon) var(--rayon) 0;
+  padding:14px 16px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+  font-family:'Instrument Sans',sans-serif;
+}
+.seance:hover{border-left-color:var(--piste)}
+.seance .quoi{font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;color:var(--encre)}
+.seance .quand{font-size:13.5px;color:var(--gris);margin-top:3px;line-height:1.45}
+.places{font-size:12px;font-weight:600;color:var(--piste);white-space:nowrap;padding-top:2px}
+.places.calme{color:var(--gris)}
+
+/* ---------- fiche séance ---------- */
+.visuel{
+  height:132px;border-radius:var(--rayon);margin-top:12px;
+  background:
+    repeating-linear-gradient(115deg,transparent 0 38px,rgba(244,246,241,.16) 38px 40px),
+    var(--resine);
+  display:flex;align-items:flex-end;padding:14px;
+}
+.etiquette{background:var(--sifflet);color:var(--encre);font-weight:600;font-size:12.5px;padding:5px 10px;border-radius:6px}
+.faits{margin-top:18px;border-top:1px solid var(--craie-ombre)}
+.fait{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--craie-ombre);font-size:14.5px}
+.fait dt{color:var(--gris)}
+.fait dd{text-align:right;font-weight:600}
+
+/* ---------- packs ---------- */
+.packs{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.pack{
+  cursor:pointer;background:#fff;border:1.5px solid var(--craie-ombre);border-radius:var(--rayon);
+  padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  font-family:'Instrument Sans',sans-serif;text-align:left;width:100%;
+}
+.pack[aria-pressed="true"]{border-color:var(--resine);background:#fff;box-shadow:inset 0 0 0 1.5px var(--resine)}
+.pack .nom{font-family:'Archivo',sans-serif;font-weight:700;font-size:16px}
+.pack .detail{font-size:13.5px;color:var(--gris);margin-top:3px}
+.pack .prix{font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;white-space:nowrap}
+
+/* ---------- actions ---------- */
+.action{
+  width:100%;margin-top:20px;cursor:pointer;border:0;border-radius:var(--rayon);
+  background:var(--piste);color:#fff;padding:15px;
+  font:700 16px 'Archivo',sans-serif;letter-spacing:-.01em;
+}
+.action.calme{background:transparent;color:var(--resine);border:1.5px solid var(--craie-ombre);margin-top:10px}
+.note{font-size:13px;color:var(--gris);margin-top:10px;text-align:center;line-height:1.5}
+
+/* ---------- confirmation ---------- */
+.confirme{text-align:center;padding-top:44px}
+.pastille{
+  width:72px;height:72px;border-radius:50%;background:var(--resine);color:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+  font-size:34px;font-family:'Archivo',sans-serif;
+}
+.recap{background:#fff;border-radius:var(--rayon);padding:16px;margin-top:22px;text-align:left}
+
+/* ---------- compte ---------- */
+.compteur{background:var(--resine);color:#fff;border-radius:var(--rayon);padding:18px;margin-top:14px}
+.compteur .gros{font-family:'Archivo',sans-serif;font-weight:800;font-size:40px;line-height:1}
+.compteur p{font-size:14px;color:#BFD8CF;margin-top:6px}
+.passe{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--craie-ombre);font-size:14.5px}
+.passe span:last-child{color:var(--gris)}
+
+/* ---------- barre de navigation ---------- */
+.nav{
+  flex:0 0 auto;display:flex;background:#fff;border-top:1px solid var(--craie-ombre);
+  padding:9px 10px 18px;
+}
+.nav button{
+  flex:1;background:none;border:0;cursor:pointer;padding:7px 4px;border-radius:10px;
+  font:600 11.5px 'Instrument Sans',sans-serif;color:var(--gris);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.nav button[aria-current="true"]{color:var(--resine)}
+.nav .picto{width:20px;height:20px;display:block}
+.pied{color:#8AA49A;font-size:12.5px;text-align:center;max-width:420px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="plateau">
+  <div class="enseigne">
+    <h1>Sport'ip — prototype</h1>
+    <p>Maquette cliquable pour les entretiens utilisateurs. Aucune donnée réelle.</p>
+  </div>
+
+  <nav class="telecommande" aria-label="Aller à un écran">
+    <button data-va="accueil" aria-current="true">Accueil</button>
+    <button data-va="resultats">Résultats</button>
+    <button data-va="seance">Séance</button>
+    <button data-va="pack">Pack</button>
+    <button data-va="confirme">Confirmation</button>
+    <button data-va="compte">Mon compte</button>
+  </nav>
+
+  <div class="mobile">
+    <div class="barre-etat"><span>9:41</span><span>Croix (59)</span></div>
+
+    <!-- ÉCRAN 1 : ACCUEIL -->
+    <section class="vue" id="accueil" data-active>
+      <h2>Essayez un sport<br>cette semaine.</h2>
+      <p class="sous">Une séance réservée en deux clics. Le club est prévenu, vous n'avez personne à appeler.</p>
+
+      <div class="envies" role="group" aria-label="Quelle est votre envie">
+        <button class="envie" aria-pressed="true">Me défouler</button>
+        <button class="envie" aria-pressed="false">Me détendre</button>
+        <button class="envie" aria-pressed="false">En groupe</button>
+        <button class="envie" aria-pressed="false">Dehors</button>
+      </div>
+
+      <div class="liste">
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Boxe anglaise</span><span class="quand">Mardi 19h00 · Ring Croisien, Croix<br>À 1,8 km</span></span>
+          <span class="places">2 places</span>
+        </button>
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Escalade en salle</span><span class="quand">Mercredi 12h30 · Vertical'Art, Villeneuve-d'Ascq<br>À 6 km</span></span>
+          <span class="places calme">6 places</span>
+        </button>
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Volley loisir</span><span class="quand">Jeudi 20h15 · Gymnase Jean Zay, Roubaix<br>À 3,1 km</span></span>
+          <span class="places calme">4 places</span>
+        </button>
+      </div>
+
+      <button class="action calme" data-va="resultats">Voir les 27 séances de la semaine</button>
+    </section>
+
+    <!-- ÉCRAN 2 : RÉSULTATS -->
+    <section class="vue" id="resultats">
+      <button class="retour" data-va="accueil">← Accueil</button>
+      <h2>27 séances</h2>
+      <p class="sous">Du lundi 14 au dimanche 20 septembre, à moins de 10 km.</p>
+
+      <div class="envies" role="group" aria-label="Filtres">
+        <button class="envie" aria-pressed="true">Cette semaine</button>
+        <button class="envie" aria-pressed="false">Après 18h</button>
+        <button class="envie" aria-pressed="false">Sans matériel</button>
+        <button class="envie" aria-pressed="false">Débutant</button>
+      </div>
+
+      <div class="liste">
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Boxe anglaise</span><span class="quand">Mardi 19h00 · Ring Croisien</span></span>
+          <span class="places">2 places</span>
+        </button>
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Yoga vinyasa</span><span class="quand">Mardi 12h15 · Studio Lila, Lille</span></span>
+          <span class="places calme">8 places</span>
+        </button>
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Escalade en salle</span><span class="quand">Mercredi 12h30 · Vertical'Art</span></span>
+          <span class="places calme">6 places</span>
+        </button>
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Badminton</span><span class="quand">Mercredi 18h45 · Halle Delaune, Roubaix</span></span>
+          <span class="places">1 place</span>
+        </button>
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Volley loisir</span><span class="quand">Jeudi 20h15 · Gymnase Jean Zay</span></span>
+          <span class="places calme">4 places</span>
+        </button>
+        <button class="seance" data-va="seance">
+          <span><span class="quoi">Aviron d'initiation</span><span class="quand">Samedi 10h00 · Base de Wambrechies</span></span>
+          <span class="places calme">5 places</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ÉCRAN 3 : FICHE SÉANCE -->
+    <section class="vue" id="seance">
+      <button class="retour" data-va="resultats">← Séances</button>
+      <div class="visuel"><span class="etiquette">Ouvert aux débutants</span></div>
+      <h2 style="margin-top:16px">Boxe anglaise</h2>
+      <p class="sous">Séance collective d'1h. Échauffement, technique au sac, pas de combat pour une première fois.</p>
+
+      <dl class="faits">
+        <div class="fait"><dt>Quand</dt><dd>Mardi 16 sept., 19h00</dd></div>
+        <div class="fait"><dt>Où</dt><dd>Ring Croisien, Croix</dd></div>
+        <div class="fait"><dt>Qui encadre</dt><dd>Karim, éducateur</dd></div>
+        <div class="fait"><dt>À apporter</dt><dd>Baskets, une bouteille</dd></div>
+        <div class="fait"><dt>Prêté sur place</dt><dd>Gants, bandes</dd></div>
+      </dl>
+
+      <button class="action" data-va="pack">Réserver cette séance</button>
+      <p class="note">Annulation gratuite jusqu'à 4h avant. La séance vous est recréditée.</p>
+    </section>
+
+    <!-- ÉCRAN 4 : PACK -->
+    <section class="vue" id="pack">
+      <button class="retour" data-va="seance">← Séance</button>
+      <h2>Choisissez votre formule</h2>
+      <p class="sous">Boxe anglaise, mardi 19h00. Votre place est gardée 10 minutes.</p>
+
+      <div class="packs" role="group" aria-label="Formules">
+        <button class="pack" aria-pressed="false">
+          <span><span class="nom">À l'unité</span><span class="detail">Cette séance seulement</span></span>
+          <span class="prix">12 €</span>
+        </button>
+        <button class="pack" aria-pressed="true">
+          <span><span class="nom">Pack Découverte</span><span class="detail">5 séances, 5 sports, 3 mois</span></span>
+          <span class="prix">59 €</span>
+        </button>
+        <button class="pack" aria-pressed="false">
+          <span><span class="nom">Pack Duo</span><span class="detail">5 séances à deux, 3 mois</span></span>
+          <span class="prix">99 €</span>
+        </button>
+      </div>
+
+      <button class="action" data-va="confirme">Payer 59 € et réserver</button>
+      <p class="note">Test de prix : notez la réaction avant de montrer les montants.</p>
+    </section>
+
+    <!-- ÉCRAN 5 : CONFIRMATION -->
+    <section class="vue" id="confirme">
+      <div class="confirme">
+        <div class="pastille" aria-hidden="true">✓</div>
+        <h2>C'est réservé.</h2>
+        <p class="sous">Karim a reçu votre nom. Présentez-vous 10 minutes avant, il vous attend.</p>
+        <div class="recap">
+          <h3>Boxe anglaise</h3>
+          <p class="sous" style="margin-top:6px">Mardi 16 septembre, 19h00<br>Ring Croisien, 14 rue Jean Jaurès, Croix</p>
+        </div>
+      </div>
+      <button class="action calme" data-va="compte">Voir mes séances</button>
+    </section>
+
+    <!-- ÉCRAN 6 : COMPTE -->
+    <section class="vue" id="compte">
+      <h2>Mon pack</h2>
+      <div class="compteur">
+        <span class="gros">4</span>
+        <p>séances restantes sur 5 · valables jusqu'au 12 décembre</p>
+      </div>
+
+      <h3 style="margin-top:26px">À venir</h3>
+      <div class="liste" style="margin-top:10px">
+        <button class="seance" data-va="confirme">
+          <span><span class="quoi">Boxe anglaise</span><span class="quand">Mardi 16 sept., 19h00 · Croix</span></span>
+          <span class="places calme">Réservé</span>
+        </button>
+      </div>
+
+      <h3 style="margin-top:26px">Déjà essayés</h3>
+      <div style="margin-top:6px">
+        <div class="passe"><span>Escalade</span><span>4 sept.</span></div>
+        <div class="passe"><span>Badminton</span><span>28 août</span></div>
+      </div>
+      <button class="action calme" data-va="accueil">Trouver une autre séance</button>
+    </section>
+
+    <!-- BARRE DE NAVIGATION -->
+    <nav class="nav" aria-label="Navigation principale">
+      <button data-va="accueil" aria-current="true">
+        <svg class="picto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        Explorer
+      </button>
+      <button data-va="compte">
+        <svg class="picto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+        Mes séances
+      </button>
+      <button data-va="pack">
+        <svg class="picto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        Mon pack
+      </button>
+    </nav>
+  </div>
+
+  <p class="pied">Écrans accessibles aussi au clavier (flèches ← → pour naviguer pendant une démonstration).</p>
+</div>
+
+<script>
+(function(){
+  const vues = [...document.querySelectorAll('.vue')];
+  const ordre = vues.map(v => v.id);
+
+  function afficher(id){
+    vues.forEach(v => v.id === id ? v.setAttribute('data-active','') : v.removeAttribute('data-active'));
+    document.querySelectorAll('.telecommande button, .nav button').forEach(b =>
+      b.setAttribute('aria-current', String(b.dataset.va === id))
+    );
+    const active = document.getElementById(id);
+    if (active) active.scrollTop = 0;
+  }
+
+  // tout élément porteur de data-va navigue
+  document.addEventListener('click', e => {
+    const cible = e.target.closest('[data-va]');
+    if (cible) afficher(cible.dataset.va);
+  });
+
+  // boutons à état (envies, filtres, packs)
+  document.querySelectorAll('.envie').forEach(b => {
+    b.addEventListener('click', () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'));
+  });
+  document.querySelectorAll('.packs').forEach(groupe => {
+    groupe.querySelectorAll('.pack').forEach(p => p.addEventListener('click', () => {
+      groupe.querySelectorAll('.pack').forEach(a => a.setAttribute('aria-pressed','false'));
+      p.setAttribute('aria-pressed','true');
+    }));
+  });
+
+  // flèches clavier pour dérouler la démonstration
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input, textarea')) return;
+    const i = ordre.indexOf(document.querySelector('.vue[data-active]').id);
+    if (e.key === 'ArrowRight') afficher(ordre[Math.min(i + 1, ordre.length - 1)]);
+    if (e.key === 'ArrowLeft')  afficher(ordre[Math.max(i - 1, 0)]);
+  });
+})();
+</script>
+</body>
+</html>
